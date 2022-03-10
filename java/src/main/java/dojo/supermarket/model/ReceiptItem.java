@@ -1,5 +1,7 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.utils.Formatter;
+
 import java.util.Locale;
 import java.util.Objects;
 
@@ -49,27 +51,14 @@ public class ReceiptItem {
         return Objects.hash(product, price, totalPrice, quantity);
     }
 
-    @Override
-    public String toString() {
+    public String print() {
         String totalPricePresentation = String.format(Locale.UK, "%.2f", getTotalPrice());
-        String line = formatLineWithWhitespace(getProduct().getName(), totalPricePresentation);
+        String line = Formatter.formatLineWithWhitespace(getProduct().getName(), totalPricePresentation);
 
         if (getQuantity() != 1) {
             line += "  " + String.format(Locale.UK, "%.2f", getPrice()) + " * " + presentQuantity() + "\n";
         }
         return line;
-    }
-
-    public String formatLineWithWhitespace(String name, String value) {
-        StringBuilder line = new StringBuilder();
-        line.append(name);
-        int whitespaceSize = 40 - name.length() - value.length();
-        for (int i = 0; i < whitespaceSize; i++) {
-            line.append(" ");
-        }
-        line.append(value);
-        line.append('\n');
-        return line.toString();
     }
 
     private String presentQuantity() {
