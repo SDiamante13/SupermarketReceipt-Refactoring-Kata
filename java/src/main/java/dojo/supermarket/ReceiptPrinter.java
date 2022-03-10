@@ -19,9 +19,12 @@ public class ReceiptPrinter {
     public String printReceipt(Receipt receipt) {
         StringBuilder result = new StringBuilder();
         for (ReceiptItem item : receipt.getItems()) {
-            String receiptItem = presentReceiptItem(item);
-            result.append(receiptItem);
+            String line = item.toString();
+
+            //result.append(item.toString());
+            result.append(line);
         }
+
         for (Discount discount : receipt.getDiscounts()) {
             String discountPresentation = presentDiscount(discount);
             result.append(discountPresentation);
@@ -32,51 +35,29 @@ public class ReceiptPrinter {
         return result.toString();
     }
 
-    private String presentReceiptItem(ReceiptItem item) {
-        String totalPricePresentation = presentPrice(item.getTotalPrice());
-        String name = item.getProduct().getName();
-
-        String line = formatLineWithWhitespace(name, totalPricePresentation);
-
-        if (item.getQuantity() != 1) {
-            line += "  " + presentPrice(item.getPrice()) + " * " + presentQuantity(item) + "\n";
-        }
-        return line;
-    }
-
     private String presentDiscount(Discount discount) {
         String name = discount.getDescription() + "(" + discount.getProduct().getName() + ")";
-        String value = presentPrice(discount.getDiscountAmount());
+        String value = String.format(Locale.UK, "%.2f", discount.getDiscountAmount());
 
-        return formatLineWithWhitespace(name, value);
+        return formatLineWithWhitespace(name, value, this.columns);
     }
 
     private String presentTotal(Receipt receipt) {
         String name = "Total: ";
-        String value = presentPrice(receipt.getTotalPrice());
-        return formatLineWithWhitespace(name, value);
+        String value = String.format(Locale.UK, "%.2f", receipt.getTotalPrice());
+        return formatLineWithWhitespace(name, value, this.columns);
     }
 
-    private String formatLineWithWhitespace(String name, String value) {
+    public String formatLineWithWhitespace(String name, String value, int columns) {
         StringBuilder line = new StringBuilder();
         line.append(name);
-        int whitespaceSize = this.columns - name.length() - value.length();
+        int whitespaceSize = columns - name.length() - value.length();
         for (int i = 0; i < whitespaceSize; i++) {
             line.append(" ");
         }
         line.append(value);
         line.append('\n');
         return line.toString();
-    }
-
-    private static String presentPrice(double price) {
-        return String.format(Locale.UK, "%.2f", price);
-    }
-
-    private static String presentQuantity(ReceiptItem item) {
-        return ProductUnit.Each.equals(item.getProduct().getUnit())
-                ? String.format("%x", (int)item.getQuantity())
-                : String.format(Locale.UK, "%.3f", item.getQuantity());
     }
 
 }
