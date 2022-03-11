@@ -15,10 +15,6 @@ public class Discount {
         this.discountAmount = discountAmount;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public double getDiscountAmount() {
         return discountAmount;
     }
@@ -28,8 +24,8 @@ public class Discount {
     }
 
     public String print() {
-        String name = getDescription() + "(" + getProduct().getName() + ")";
-        String value = String.format(Locale.UK, "%.2f", getDiscountAmount());
+        String name = description + "(" + product.getName() + ")";
+        String value = String.format(Locale.UK, "%.2f", discountAmount);
 
         return Formatter.formatLineWithWhitespace(name, value);
     }
