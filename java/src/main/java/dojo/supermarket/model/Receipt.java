@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 public class Receipt {
     public static final String NEW_LINE = "\n";
 
-    private List<ReceiptItem> items = new ArrayList<>();
-    private List<Discount> discounts = new ArrayList<>();
+    private final List<ReceiptItem> items = new ArrayList<>();
+    private final List<Discount> discounts = new ArrayList<>();
 
     public Double getTotalPrice() {
         double total = 0.0;
@@ -24,8 +24,8 @@ public class Receipt {
         return total;
     }
 
-    public void addProduct(Product p, double quantity, double price, double totalPrice) {
-        this.items.add(new ReceiptItem(p, quantity, price, totalPrice));
+    public void addProduct(Product product, double quantity, double price, double totalPrice) {
+        this.items.add(new ReceiptItem(product, quantity, price, totalPrice));
     }
 
     public void addDiscount(Discount discount) {
@@ -39,19 +39,19 @@ public class Receipt {
                 formatTotalPrice();
     }
 
-    public String addItemsTo() {
+    private String addItemsTo() {
         return items.stream()
                 .map(ReceiptItem::print)
                 .collect(Collectors.joining(""));
     }
 
-    public String addDiscountsTo() {
+    private String addDiscountsTo() {
         return discounts.stream()
                 .map(Discount::print)
                 .collect(Collectors.joining(""));
     }
 
-    public String formatTotalPrice() {
+    private String formatTotalPrice() {
         return Formatter.formatLineWithWhitespace("Total: ", String.format(Locale.UK, "%.2f", getTotalPrice()));
     }
 }

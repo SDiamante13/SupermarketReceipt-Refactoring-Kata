@@ -8,18 +8,15 @@ import java.util.Objects;
 public class ReceiptItem {
     private final Product product;
     private final double price;
-    private double totalPrice;
+    private final double totalPrice;
     private final double quantity;
 
-    public ReceiptItem(Product p, double quantity, double price, double totalPrice) {
-        this.product = p;
+    // TODO: total price could be derived
+    public ReceiptItem(Product product, double quantity, double price, double totalPrice) {
+        this.product = product;
         this.quantity = quantity;
         this.price = price;
         this.totalPrice = totalPrice;
-    }
-
-    public double getPrice() {
-        return this.price;
     }
 
     public Product getProduct() {
@@ -52,11 +49,11 @@ public class ReceiptItem {
     }
 
     public String print() {
-        String totalPricePresentation = String.format(Locale.UK, "%.2f", getTotalPrice());
-        String line = Formatter.formatLineWithWhitespace(getProduct().getName(), totalPricePresentation);
+        String totalPricePresentation = String.format(Locale.UK, "%.2f", totalPrice);
+        String line = Formatter.formatLineWithWhitespace(product.getName(), totalPricePresentation);
 
         if (getQuantity() != 1) {
-            line += "  " + String.format(Locale.UK, "%.2f", getPrice()) + " * " + presentQuantity() + "\n";
+            line += "  " + String.format(Locale.UK, "%.2f", price) + " * " + presentQuantity() + "\n";
         }
         return line;
     }

@@ -19,10 +19,6 @@ public class Discount {
         return discountAmount;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
     public String print() {
         String name = description + "(" + product.getName() + ")";
         String value = String.format(Locale.UK, "%.2f", discountAmount);
