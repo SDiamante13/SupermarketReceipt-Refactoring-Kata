@@ -5,8 +5,11 @@ import dojo.supermarket.utils.Formatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class Receipt {
+    public static final String NEW_LINE = "\n";
+
     private List<ReceiptItem> items = new ArrayList<>();
     private List<Discount> discounts = new ArrayList<>();
 
@@ -21,23 +24,34 @@ public class Receipt {
         return total;
     }
 
-    public String formatTotalPrice() {
-        return Formatter.formatLineWithWhitespace("Total: ", String.format(Locale.UK, "%.2f", getTotalPrice()));
-    }
-
     public void addProduct(Product p, double quantity, double price, double totalPrice) {
         this.items.add(new ReceiptItem(p, quantity, price, totalPrice));
-    }
-
-    public List<ReceiptItem> getItems() {
-        return new ArrayList<>(this.items);
     }
 
     public void addDiscount(Discount discount) {
         this.discounts.add(discount);
     }
 
-    public List<Discount> getDiscounts() {
-        return discounts;
+    public String print() {
+        return addItemsTo() +
+                addDiscountsTo() +
+                NEW_LINE +
+                formatTotalPrice();
+    }
+
+    public String addItemsTo() {
+        return items.stream()
+                .map(ReceiptItem::print)
+                .collect(Collectors.joining(""));
+    }
+
+    public String addDiscountsTo() {
+        return discounts.stream()
+                .map(Discount::print)
+                .collect(Collectors.joining(""));
+    }
+
+    public String formatTotalPrice() {
+        return Formatter.formatLineWithWhitespace("Total: ", String.format(Locale.UK, "%.2f", getTotalPrice()));
     }
 }

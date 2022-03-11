@@ -4,51 +4,51 @@ import dojo.supermarket.model.*;
 import org.approvaltests.Approvals;
 import org.junit.jupiter.api.Test;
 
-public class ReceiptPrinterTest {
+class ReceiptTest {
 
     Product toothbrush = new Product("toothbrush", ProductUnit.Each);
     Product apples = new Product("apples", ProductUnit.Kilo);
     Receipt receipt = new Receipt();
 
     @Test
-    public void oneLineItem() {
+    void oneLineItem() {
         receipt.addProduct(toothbrush, 1, 0.99, 0.99);
-        Approvals.verify(new ReceiptPrinter().printReceipt(receipt));
+        Approvals.verify(receipt.print());
     }
 
     @Test
-    public void quantityTwo() {
+    void quantityTwo() {
         receipt.addProduct(toothbrush, 2, 0.99,0.99 * 2);
-        Approvals.verify(new ReceiptPrinter().printReceipt(receipt));
+        Approvals.verify(receipt.print());
     }
 
     @Test
-    public void looseWeight() {
+    void looseWeight() {
         receipt.addProduct(apples, 2.3, 1.99,1.99 * 2.3);
-        Approvals.verify(new ReceiptPrinter().printReceipt(receipt));
+        Approvals.verify(receipt.print());
     }
 
     @Test
-    public void total() {
+    void total() {
 
         receipt.addProduct(toothbrush, 1, 0.99, 2*0.99);
         receipt.addProduct(apples, 0.75, 1.99, 1.99*0.75);
-        Approvals.verify(new ReceiptPrinter().printReceipt(receipt));
+        Approvals.verify(receipt.print());
     }
 
     @Test
-    public void discounts() {
+    void discounts() {
         receipt.addDiscount(new Discount(apples, "3 for 2", -0.99));
-        Approvals.verify(new ReceiptPrinter().printReceipt(receipt));
+        Approvals.verify(receipt.print());
     }
 
     @Test
-    public void printWholeReceipt() {
+    void printWholeReceipt() {
         receipt.addProduct(toothbrush, 1, 0.99, 0.99);
         receipt.addProduct(toothbrush, 2, 0.99, 2*0.99);
         receipt.addProduct(apples, 0.75, 1.99, 1.99*0.75);
         receipt.addDiscount(new Discount(toothbrush, "3 for 2", -0.99));
-        Approvals.verify(new ReceiptPrinter().printReceipt(receipt));
+        Approvals.verify(receipt.print());
     }
 
 }
