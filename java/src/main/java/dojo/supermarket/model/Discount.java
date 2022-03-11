@@ -1,5 +1,9 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.utils.Formatter;
+
+import java.util.Locale;
+
 public class Discount {
     private final String description;
     private final double discountAmount;
@@ -23,4 +27,10 @@ public class Discount {
         return product;
     }
 
+    public String print() {
+        String name = getDescription() + "(" + getProduct().getName() + ")";
+        String value = String.format(Locale.UK, "%.2f", getDiscountAmount());
+
+        return Formatter.formatLineWithWhitespace(name, value);
+    }
 }

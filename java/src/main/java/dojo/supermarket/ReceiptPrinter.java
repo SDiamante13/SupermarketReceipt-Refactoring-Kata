@@ -3,37 +3,35 @@ package dojo.supermarket;
 import dojo.supermarket.model.*;
 import dojo.supermarket.utils.Formatter;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
+
+import static java.lang.String.join;
 
 public class ReceiptPrinter {
 
+    public static final String NEW_LINE = "\n";
+
     public String printReceipt(Receipt receipt) {
-        StringBuilder result = new StringBuilder();
+        List<String> itemsOnReceipt = formatItemsOnReceipt(receipt.getItems());
+        List<String> discountsOnReceipt = formatDiscountsOnReceipt(receipt.getDiscounts());
 
-        addItemsToReceipt(receipt, result);
-
-        for (Discount discount : receipt.getDiscounts()) {
-            String name = discount.getDescription() + "(" + discount.getProduct().getName() + ")";
-            String value = String.format(Locale.UK, "%.2f", discount.getDiscountAmount());
-
-            String discountPresentation = Formatter.formatLineWithWhitespace(name, value);
-            result.append(discountPresentation);
-        }
-
-        result.append("\n");
-        result.append(presentTotal(receipt));
-        return result.toString();
+        return join("", itemsOnReceipt) +
+                join("", discountsOnReceipt) +
+                NEW_LINE +
+                receipt.formatTotalPrice();
     }
 
-    private void addItemsToReceipt(Receipt receipt, StringBuilder result) {
-        receipt.getItems()
-                .forEach(item -> result.append(item.print()));
+    private List<String> formatDiscountsOnReceipt(List<Discount> discounts) {
+        return discounts.stream()
+                .map(Discount::print)
+                .collect(Collectors.toList());
     }
 
-    private String presentTotal(Receipt receipt) {
-        String name = "Total: ";
-        String value = String.format(Locale.UK, "%.2f", receipt.getTotalPrice());
-        return Formatter.formatLineWithWhitespace(name, value);
+    private List<String> formatItemsOnReceipt(List<ReceiptItem> receiptItems) {
+        return receiptItems.stream()
+                .map(ReceiptItem::print)
+                .collect(Collectors.toList());
     }
-
 }

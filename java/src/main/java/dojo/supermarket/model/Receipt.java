@@ -1,7 +1,10 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.utils.Formatter;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Receipt {
     private List<ReceiptItem> items = new ArrayList<>();
@@ -16,6 +19,10 @@ public class Receipt {
             total += discount.getDiscountAmount();
         }
         return total;
+    }
+
+    public String formatTotalPrice() {
+        return Formatter.formatLineWithWhitespace("Total: ", String.format(Locale.UK, "%.2f", getTotalPrice()));
     }
 
     public void addProduct(Product p, double quantity, double price, double totalPrice) {
