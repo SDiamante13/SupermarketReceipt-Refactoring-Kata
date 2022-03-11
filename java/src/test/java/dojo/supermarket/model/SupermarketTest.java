@@ -5,29 +5,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SupermarketTest {
-    private SupermarketCatalog catalog;
-    private Teller teller;
-    private ShoppingCart theCart;
-    private Product toothbrush;
-    private Product rice;
-    private Product apples;
-    private Product cherryTomatoes;
+    private final SupermarketCatalog catalog = new FakeCatalog();
+    private final Teller teller = new Teller(catalog);
+    private final ShoppingCart theCart = new ShoppingCart();
+    private final Product toothbrush = new Product("toothbrush", ProductUnit.Each);
+    private final Product rice = new Product("rice", ProductUnit.Each);
+    private final Product apples = new Product("apples", ProductUnit.Kilo);
+    private final Product cherryTomatoes = new Product("cherry tomato box", ProductUnit.Each);
 
     @BeforeEach
     void setUp() {
-        catalog = new FakeCatalog();
-        teller = new Teller(catalog);
-        theCart = new ShoppingCart();
-
-        toothbrush = new Product("toothbrush", ProductUnit.Each);
         catalog.addProduct(toothbrush, 0.99);
-        rice = new Product("rice", ProductUnit.Each);
         catalog.addProduct(rice, 2.99);
-        apples = new Product("apples", ProductUnit.Kilo);
         catalog.addProduct(apples, 1.99);
-        cherryTomatoes = new Product("cherry tomato box", ProductUnit.Each);
         catalog.addProduct(cherryTomatoes, 0.69);
-
     }
 
     @Test
