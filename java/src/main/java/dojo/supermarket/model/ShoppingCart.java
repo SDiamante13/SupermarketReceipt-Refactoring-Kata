@@ -35,7 +35,7 @@ public class ShoppingCart {
     }
 
     private void applyOfferToProduct(Receipt receipt, Double quantity, double unitPrice, Offer offer) {
-        Discount discount = offer.buildDiscount(quantity, unitPrice, offer.amount);
+        Discount discount = offer.buildDiscount(quantity, unitPrice);
         receipt.addDiscount(discount);
     }
 

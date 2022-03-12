@@ -14,6 +14,9 @@ public class Teller {
     public void addSpecialOffer(SpecialOfferType offerType, Product product, double argument) {
         this.offers.put(product, new Offer(offerType, product, argument));
     }
+    // addBundleOffer(products, argument)
+
+     // BUNDLE, List<Product>, argument
 
     public Receipt checksOutArticlesFrom(ShoppingCart shoppingCart) {
         Receipt receipt = new Receipt();

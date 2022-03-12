@@ -11,10 +11,14 @@ public class Offer {
         this.product = product;
     }
 
-    public Discount buildDiscount(Double quantity, double unitPrice, double offerAmount) {
+    public Discount buildDiscount(Double quantity, double unitPrice) {
         int quantityAsInt = Math.toIntExact(Math.round(quantity));
         return offerType.isEligible(quantityAsInt)
-                ? new Discount(product, offerType.description(offerAmount), offerType.discountAmount(quantity, unitPrice, quantityAsInt, offerAmount))
+                ? new Discount(
+                product,
+                offerType.description(amount),
+                offerType.discountAmount(quantity, unitPrice, quantityAsInt, amount)
+        )
                 : null;
     }
 }
