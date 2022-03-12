@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Product {
     private final String name;
     private final ProductUnitType unit;
-    private double price;
+    private final double price;
 
     public Product(String name, ProductUnitType unit, double price) {
         this.name = name;

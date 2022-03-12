@@ -3,7 +3,8 @@ package dojo.supermarket.model;
 public enum SpecialOfferType {
     THREE_FOR_TWO {
         @Override
-        double discountAmount(Double quantity, double unitPrice, int quantityAsInt, double offerAmount) {
+        double discountAmount(Double quantity, double unitPrice, double offerAmount) {
+            int quantityAsInt = Math.toIntExact(Math.round(quantity));
             return -(quantity * unitPrice - (((quantityAsInt / 3) * 2 * unitPrice) + quantityAsInt % 3 * unitPrice));
         }
 
@@ -19,7 +20,7 @@ public enum SpecialOfferType {
     },
     TEN_PERCENT_DISCOUNT {
         @Override
-        double discountAmount(Double quantity, double unitPrice, int quantityAsInt, double offerAmount) {
+        double discountAmount(Double quantity, double unitPrice, double offerAmount) {
             return -(quantity * unitPrice * offerAmount / 100.0);
         }
 
@@ -35,7 +36,7 @@ public enum SpecialOfferType {
     },
     TWO_FOR_AMOUNT {
         @Override
-        double discountAmount(Double quantity, double unitPrice, int quantityAsInt, double offerAmount) {
+        double discountAmount(Double quantity, double unitPrice, double offerAmount) {
             double pricePerUnit = offerAmount * (quantity / 2);
             double total = pricePerUnit + (quantity % 2) * unitPrice;
             return -(unitPrice * quantity - total);
@@ -53,7 +54,8 @@ public enum SpecialOfferType {
     },
     FIVE_FOR_AMOUNT {
         @Override
-        double discountAmount(Double quantity, double unitPrice, int quantityAsInt, double offerAmount) {
+        double discountAmount(Double quantity, double unitPrice, double offerAmount) {
+            int quantityAsInt = Math.toIntExact(Math.round(quantity));
             double discountN = unitPrice * quantity - (offerAmount * (quantityAsInt / 5) + quantityAsInt % 5 * unitPrice);
             return -discountN;
         }
@@ -69,7 +71,7 @@ public enum SpecialOfferType {
         }
     };
 
-    abstract double discountAmount(Double quantity, double unitPrice, int quantityAsInt, double offerAmount);
+    abstract double discountAmount(Double quantity, double unitPrice, double offerAmount);
     abstract String description(double offerAmount);
     abstract boolean isEligible(int quantity);
 }

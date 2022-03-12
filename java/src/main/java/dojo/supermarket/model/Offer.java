@@ -17,7 +17,7 @@ public class Offer {
                 ? new Discount(
                 product,
                 offerType.description(amount),
-                offerType.discountAmount(quantity, unitPrice, quantityAsInt, amount)
+                offerType.discountAmount(quantity, unitPrice, amount)
         )
                 : null;
     }
