@@ -5,10 +5,12 @@ import java.util.Objects;
 public class Product {
     private final String name;
     private final ProductUnitType unit;
+    private double price;
 
-    public Product(String name, ProductUnitType unit) {
+    public Product(String name, ProductUnitType unit, double price) {
         this.name = name;
         this.unit = unit;
+        this.price = price;
     }
 
     public String getName() {
@@ -18,6 +20,10 @@ public class Product {
 
     public ProductUnitType getUnit() {
         return unit;
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     @Override

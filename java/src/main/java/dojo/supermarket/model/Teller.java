@@ -4,19 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Teller {
-    private final SupermarketCatalog catalog;
     private final Map<Product, Offer> offers = new HashMap<>();
-
-    public Teller(SupermarketCatalog catalog) {
-        this.catalog = catalog;
-    }
 
     public void addSpecialOffer(SpecialOfferType offerType, Product product, double argument) {
         this.offers.put(product, new Offer(offerType, product, argument));
     }
-    // addBundleOffer(products, argument)
-
-     // BUNDLE, List<Product>, argument
 
     public Receipt checksOutArticlesFrom(ShoppingCart shoppingCart) {
         Receipt receipt = new Receipt();
@@ -25,12 +17,14 @@ public class Teller {
             Product product = item.getProduct();
             double quantity = item.getQuantity();
 
-            double price = quantity * catalog.getUnitPrice(product);
+            // TODO: move this into a query. product.calculatePriceFor(quantity)
+            double price = quantity * product.getPrice();
 
-            receipt.addProduct(product, quantity, catalog.getUnitPrice(product), price);
+            // TODO: remove price parameter
+            receipt.addProduct(product, quantity, product.getPrice(), price);
         }
 
-        shoppingCart.handleOffers(receipt, offers, catalog);
+        shoppingCart.handleOffers(receipt, offers);
 
         return receipt;
     }

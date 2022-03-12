@@ -26,10 +26,10 @@ public class ShoppingCart {
         }
     }
 
-    public void handleOffers(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog) {
+    public void handleOffers(Receipt receipt, Map<Product, Offer> offers) {
         productQuantities.forEach((product, quantity) -> {
             if (offers.containsKey(product)) {
-                applyOfferToProduct(receipt, quantity, catalog.getUnitPrice(product), offers.get(product));
+                applyOfferToProduct(receipt, quantity, product.getPrice(), offers.get(product));
             }
         });
     }
