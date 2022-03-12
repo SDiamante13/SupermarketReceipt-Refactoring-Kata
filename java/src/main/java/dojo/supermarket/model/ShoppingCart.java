@@ -37,46 +37,47 @@ public class ShoppingCart {
     }
 
     private void applyOfferToProduct(Receipt receipt, Map<Product, Offer> offers, SupermarketCatalog catalog, Product product, Double quantity) {
-        Offer offer = offers.get(product);
         double unitPrice = catalog.getUnitPrice(product);
         int quantityAsInt = Math.toIntExact(Math.round(quantity));
-        Discount discount = null;
-        int x = 1;
 
-        if (offer.offerType == SpecialOfferType.ThreeForTwo) {
-            x = 3;
-        } else if (offer.offerType == SpecialOfferType.TwoForAmount) {
-            x = 2;
-            if (quantityAsInt >= 2) {
-                int intDivision = quantityAsInt / x;
-                double pricePerUnit = offer.argument * intDivision;
-                double total = pricePerUnit + (quantityAsInt % 2) * unitPrice;
-                double discountN = unitPrice * quantity - total;
-                String description = "2 for " + offer.argument;
+        Discount discount = buildDiscount(offers, product, quantity, unitPrice, quantityAsInt);
 
-                discount = new Discount(product, description, -discountN);
-            }
-        }
-
-
-        if (offer.offerType == SpecialOfferType.FiveForAmount) {
-            x = 5;
-        }
-        int numberOfXs = quantityAsInt / x;
-
-        if (offer.offerType == SpecialOfferType.ThreeForTwo && quantityAsInt > 2) {
-            double discountAmount = quantity * unitPrice - ((numberOfXs * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
-            discount = new Discount(product, "3 for 2", -discountAmount);
-        }
-        if (offer.offerType == SpecialOfferType.TenPercentDiscount) {
-            discount = new Discount(product, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
-        }
-        if (offer.offerType == SpecialOfferType.FiveForAmount && quantityAsInt >= 5) {
-            double discountTotal = unitPrice * quantity - (offer.argument * numberOfXs + quantityAsInt % 5 * unitPrice);
-            discount = new Discount(product, x + " for " + offer.argument, -discountTotal);
-        }
         if (discount != null) {
             receipt.addDiscount(discount);
         }
     }
+
+    private Discount buildDiscount(Map<Product, Offer> offers, Product product, Double quantity, double unitPrice, int quantityAsInt) {
+        Offer offer = offers.get(product);
+
+        if (offer.offerType.equals(SpecialOfferType.TwoForAmount) && quantityAsInt >= 2) {
+
+            int discountRate = 2;
+
+            double pricePerUnit = offer.argument * (quantityAsInt / discountRate);
+            double total = pricePerUnit + (quantityAsInt % 2) * unitPrice;
+            double discountN = unitPrice * quantity - total;
+            String description = "2 for " + offer.argument;
+
+            return new Discount(product, description, -discountN);
+        } else if (offer.offerType.equals(SpecialOfferType.FiveForAmount) && quantityAsInt >= 5) {
+            int discountRate = 5;
+
+            double discountTotal = unitPrice * quantity - (offer.argument * (quantityAsInt / discountRate) + quantityAsInt % 5 * unitPrice);
+            return new Discount(product, discountRate + " for " + offer.argument, -discountTotal);
+        } else if (offer.offerType.equals(SpecialOfferType.ThreeForTwo) && quantityAsInt >= 3) {
+            int discountRate = 3;
+            double discountAmount =
+                    quantity *
+                            unitPrice -
+                            (((quantityAsInt / discountRate) * 2 * unitPrice)
+                                    + quantityAsInt % 3 * unitPrice);
+            return new Discount(product, "3 for 2", -discountAmount);
+        } else if (offer.offerType.equals(SpecialOfferType.TenPercentDiscount)) {
+            return new Discount(product, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
+        } else {
+            return null;
+        }
+    }
+
 }
