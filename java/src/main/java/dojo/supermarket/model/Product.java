@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public class Product {
     private final String name;
-    private final ProductUnit unit;
+    private final ProductUnitType unit;
 
-    public Product(String name, ProductUnit unit) {
+    public Product(String name, ProductUnitType unit) {
         this.name = name;
         this.unit = unit;
     }
@@ -16,7 +16,7 @@ public class Product {
     }
 
 
-    public ProductUnit getUnit() {
+    public ProductUnitType getUnit() {
         return unit;
     }
 

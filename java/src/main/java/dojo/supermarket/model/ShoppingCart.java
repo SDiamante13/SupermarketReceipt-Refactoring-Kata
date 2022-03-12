@@ -8,10 +8,10 @@ import java.util.Map;
 public class ShoppingCart {
     // TODO use Set of products, can move quantity into product model
 
-    private final List<ProductQuantity> items = new ArrayList<>();
+    private final List<Item> items = new ArrayList<>();
     private final Map<Product, Double> productQuantities = new HashMap<>();
 
-    List<ProductQuantity> getItems() {
+    List<Item> getItems() {
         return new ArrayList<>(items);
     }
 
@@ -20,7 +20,7 @@ public class ShoppingCart {
     }
 
     public void addItemQuantity(Product product, double quantity) {
-        items.add(new ProductQuantity(product, quantity));
+        items.add(new Item(product, quantity));
         if (productQuantities.containsKey(product)) {
             productQuantities.put(product, productQuantities.get(product) + quantity);
         } else {

@@ -1,10 +1,10 @@
 package dojo.supermarket.model;
 
-public class ProductQuantity {
+public class Item {
     private final Product product;
     private final double quantity;
 
-    public ProductQuantity(Product product, double weight) {
+    public Item(Product product, double weight) {
         this.product = product;
         this.quantity = weight;
     }

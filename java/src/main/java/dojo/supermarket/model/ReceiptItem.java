@@ -53,14 +53,15 @@ public class ReceiptItem {
         String line = Formatter.formatLineWithWhitespace(product.getName(), totalPricePresentation);
 
         if (getQuantity() != 1) {
-            line += "  " + String.format(Locale.UK, "%.2f", price) + " * " + presentQuantity() + "\n";
+            line += "  " + String.format(Locale.UK, "%.2f", price) + " * " + formatQuantityBasedOnProductUnit() + "\n";
         }
         return line;
     }
 
-    private String presentQuantity() {
-        return ProductUnit.Each.equals(this.product.getUnit())
-                ? String.format("%x", (int)this.quantity)
-                : String.format(Locale.UK, "%.3f", this.quantity);
+    private String formatQuantityBasedOnProductUnit() {
+        return product.getUnit().isEach()
+                ? String.format("%x", (int) quantity)
+                : String.format(Locale.UK, "%.3f", quantity);
     }
+
 }

@@ -5,20 +5,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class SupermarketTest {
-    private final SupermarketCatalog catalog = new FakeCatalog();
-    private final Teller teller = new Teller(catalog);
+    private final SupermarketCatalog fakeCatalog = new FakeCatalog();
+    private final Teller teller = new Teller(fakeCatalog);
     private final ShoppingCart theCart = new ShoppingCart();
-    private final Product toothbrush = new Product("toothbrush", ProductUnit.Each);
-    private final Product rice = new Product("rice", ProductUnit.Each);
-    private final Product apples = new Product("apples", ProductUnit.Kilo);
-    private final Product cherryTomatoes = new Product("cherry tomato box", ProductUnit.Each);
+    private final Product toothbrush = new Product("toothbrush", ProductUnitType.EACH);
+    private final Product rice = new Product("rice", ProductUnitType.EACH);
+    private final Product apples = new Product("apples", ProductUnitType.KILO);
+    private final Product cherryTomatoes = new Product("cherry tomato box", ProductUnitType.EACH);
 
     @BeforeEach
     void setUp() {
-        catalog.addProduct(toothbrush, 0.99);
-        catalog.addProduct(rice, 2.99);
-        catalog.addProduct(apples, 1.99);
-        catalog.addProduct(cherryTomatoes, 0.69);
+        fakeCatalog.addProduct(toothbrush, 0.99);
+        fakeCatalog.addProduct(rice, 2.99);
+        fakeCatalog.addProduct(apples, 1.99);
+        fakeCatalog.addProduct(cherryTomatoes, 0.69);
     }
 
     @Test
@@ -47,7 +47,7 @@ class SupermarketTest {
         theCart.addItem(toothbrush);
         theCart.addItem(toothbrush);
         theCart.addItem(toothbrush);
-        teller.addSpecialOffer(SpecialOfferType.ThreeForTwo, toothbrush, catalog.getUnitPrice(toothbrush));
+        teller.addSpecialOffer(SpecialOfferType.ThreeForTwo, toothbrush, fakeCatalog.getUnitPrice(toothbrush));
         Receipt receipt = teller.checksOutArticlesFrom(theCart);
         Approvals.verify(receipt.print());
     }
@@ -55,7 +55,7 @@ class SupermarketTest {
     @Test
     void buy_two_get_one_free_but_insufficient_in_basket() {
         theCart.addItem(toothbrush);
-        teller.addSpecialOffer(SpecialOfferType.ThreeForTwo, toothbrush, catalog.getUnitPrice(toothbrush));
+        teller.addSpecialOffer(SpecialOfferType.ThreeForTwo, toothbrush, fakeCatalog.getUnitPrice(toothbrush));
         Receipt receipt = teller.checksOutArticlesFrom(theCart);
         Approvals.verify(receipt.print());
     }
@@ -66,7 +66,7 @@ class SupermarketTest {
         theCart.addItem(toothbrush);
         theCart.addItem(toothbrush);
         theCart.addItem(toothbrush);
-        teller.addSpecialOffer(SpecialOfferType.ThreeForTwo, toothbrush, catalog.getUnitPrice(toothbrush));
+        teller.addSpecialOffer(SpecialOfferType.ThreeForTwo, toothbrush, fakeCatalog.getUnitPrice(toothbrush));
         Receipt receipt = teller.checksOutArticlesFrom(theCart);
         Approvals.verify(receipt.print());
     }
